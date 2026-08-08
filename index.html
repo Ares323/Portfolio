@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prashant Kumar — UI/UX Design Portfolio</title>
+<meta name="description" content="UI/UX design portfolio showcasing product design case studies.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   DESIGN TOKENS
+   ========================================================= */
+:root {
+  --bg:        #F7F7F5;
+  --surface:   #FFFFFF;
+  --ink:       #16171B;
+  --muted:     #6B6E76;
+  --faint:     #9A9CA5;
+  --line:      #E3E3DF;
+  --accent:    #3B4FE4;
+  --accent-ink:#FFFFFF;
+  --accent-soft: #EBEDFC;
+  --shadow: 0 1px 2px rgba(20,20,25,0.04), 0 8px 24px rgba(20,20,25,0.05);
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --sidebar-w: 340px;
+  --radius: 6px;
+  --radius-lg: 14px;
+
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --bg:        #101014;
+  --surface:   #17181C;
+  --ink:       #F1F1EF;
+  --muted:     #9A9CA5;
+  --faint:     #6B6C74;
+  --line:      #2A2B30;
+  --accent:    #7C8CFF;
+  --accent-ink:#0E0F12;
+  --accent-soft: #1D2040;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 30px rgba(0,0,0,0.35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+body { transition: background 0.25s ease, color 0.25s ease; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* Focus visibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ---------------- SIDEBAR ---------------- */
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+  padding: 28px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 34px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-role {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.toggle-track {
+  width: 34px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--line);
+  position: relative;
+  transition: background 0.2s ease;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 0.2s ease;
+}
+
+html[data-theme="dark"] .toggle-thumb { transform: translateX(16px); }
+
+.toggle-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  width: 30px;
+  text-align: left;
+}
+
+/* Section label */
+.sidebar-section-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 10px;
+  padding: 0 2px;
+}
+
+/* Project list */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  border-top: 1px solid var(--line);
+}
+
+.project-item {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 10px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-body);
+}
+
+.project-item .p-num {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--faint);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.project-item .p-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+
+.project-item .p-name {
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-item .p-sub {
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-item .p-swatch {
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* Selection marquee — the signature interaction */
+.project-item::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  border: 1.5px dashed transparent;
+  pointer-events: none;
+  transition: border-color 0.15s ease;
+}
+
+.project-item:hover::before {
+  border-color: var(--faint);
+}
+
+.project-item.active::before {
+  border-color: var(--accent);
+}
+
+.project-item.active .p-name { color: var(--accent); }
+
+.project-item.active {
+  background: var(--accent-soft);
+}
+
+/* Sidebar nav group (Resume / Contact) */
+.sidebar-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Contact / Resume nav buttons */
+.contact-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.contact-nav:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+.contact-nav-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.contact-nav-arrow { margin-left: auto; color: var(--accent); }
+
+.sidebar-footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+}
+
+.footer-links { display: flex; gap: 12px; }
+.footer-links a:hover { color: var(--accent); }
+
+/* ---------------- STAGE (main) ---------------- */
+.stage {
+  padding: 56px 64px 80px;
+  max-width: 860px;
+}
+
+.project-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.project-meta-row .dot { color: var(--faint); }
+
+.project-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 44px);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 18px;
+  letter-spacing: -0.01em;
+}
+
+.project-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.project-about {
+  margin: 30px 0 40px;
+  max-width: 62ch;
+}
+
+.project-about p {
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--ink);
+  margin: 0 0 16px;
+}
+
+.project-about p:last-child { margin-bottom: 0; }
+
+/* Shot / screenshot area */
+.project-shot-wrap { margin-bottom: 36px; }
+
+.project-shot {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.shot-canvas {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  display: block;
+}
+
+.shot-canvas svg { width: 100%; height: 100%; display: block; }
+
+.shot-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--accent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.shot-corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.shot-corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.shot-corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.shot-corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+.shot-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 18px;
+  background: linear-gradient(180deg, transparent 55%, rgba(10,10,14,0.55) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.project-shot:hover .shot-overlay { opacity: 1; }
+.project-shot:hover .shot-corner { opacity: 1; }
+
+.shot-overlay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
+.shot-overlay-btn .arrow { color: var(--accent); }
+
+/* Pager */
+.project-pager {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.pager-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 8px 4px;
+  transition: color 0.15s ease;
+}
+
+.pager-btn:hover { color: var(--accent); }
+.pager-arrow { color: var(--accent); }
+
+/* ---------------- CONTACT VIEW ---------------- */
+.contact-intro {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 56ch;
+  margin: 0 0 36px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-width: 520px;
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.field-input {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px 14px;
+  transition: border-color 0.15s ease;
+}
+
+.field-input::placeholder { color: var(--faint); }
+.field-input:focus { border-color: var(--accent); }
+.field-textarea { resize: vertical; min-height: 130px; font-family: var(--font-body); }
+
+.send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-self: flex-start;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 13px 24px;
+  border-radius: var(--radius);
+  margin-top: 6px;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.send-btn:hover { opacity: 0.9; }
+.send-btn:active { transform: translateY(1px); }
+
+.form-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  min-height: 18px;
+}
+
+/* ---------------- RESUME VIEW ---------------- */
+.resume-tagline {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0;
+  max-width: 50ch;
+}
+
+.resume-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 28px 0 44px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.resume-actions .send-btn {
+  text-decoration: none;
+}
+
+.resume-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.resume-contacts a:hover { color: var(--accent); }
+
+.resume-block {
+  margin-bottom: 44px;
+}
+
+.resume-heading {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  margin: 0 0 20px;
+}
+
+.resume-timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-entry {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+}
+
+.resume-entry:first-child { border-top: none; padding-top: 0; }
+
+.resume-entry-dates {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--faint);
+  padding-top: 3px;
+}
+
+.resume-entry-role {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 3px;
+}
+
+.resume-entry-org {
+  font-size: 13.5px;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+
+.resume-entry-desc {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0;
+  max-width: 58ch;
+}
+
+@media (max-width: 560px) {
+  .resume-entry { grid-template-columns: 1fr; gap: 6px; }
+}
+
+.resume-projects {
+  display: flex;
+  flex-direction: column;
+}
+
+.resume-project-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+
+.resume-project-item:first-child { border-top: none; padding-top: 0; }
+
+.resume-project-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--faint);
+  padding-top: 4px;
+}
+
+.resume-project-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+
+.resume-project-desc {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .resume-project-item { grid-template-columns: 1fr; gap: 6px; }
+}
+
+/* ---------------- MOBILE ---------------- */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  font-size: 17px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 25% 0 0;
+    z-index: 15;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    width: auto;
+    box-shadow: var(--shadow);
+  }
+
+  .sidebar.open { transform: translateX(0); }
+
+  .mobile-menu-btn { display: flex; }
+
+  .stage { padding: 84px 22px 60px; }
+}
+
+@media (max-width: 520px) {
+  .sidebar { inset: 0 12% 0 0; }
+  .stage { padding: 78px 16px 50px; }
+  .project-title { font-size: 28px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">AR</span>
+        <div class="brand-text">
+          <span class="brand-name">Prashant Kumar</span>
+          <span class="brand-role">Product &amp; UI/UX Designer</span>
+        </div>
+      </div>
+
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+        <span class="toggle-label" id="themeLabel">Dark</span>
+      </button>
+    </div>
+
+    <div class="sidebar-section-label">
+      <span>Index</span><span class="count" id="projectCount">00</span>
+    </div>
+
+    <nav class="project-list" id="projectList" aria-label="Project list">
+      <!-- injected by script.js -->
+    </nav>
+
+    <div class="sidebar-nav-group">
+      <button class="contact-nav" id="resumeNavBtn" type="button">
+        <span class="contact-nav-code">CV</span>
+        <span>Resume</span>
+        <span class="contact-nav-arrow">↗</span>
+      </button>
+
+      <button class="contact-nav" id="contactNavBtn" type="button">
+        <span class="contact-nav-code">N+1</span>
+        <span>Get in touch</span>
+        <span class="contact-nav-arrow">↗</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <span>© <span id="year"></span> Prashant Kumar</span>
+      <div class="footer-links">
+        <a href="https://www.behance.net/prashantkumargautam" target="_blank" rel="noopener">Behance</a>
+        <a href="https://www.linkedin.com/in/prashant-kumar-31129a40a/?skipRedirect=true" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="stage" id="stage">
+
+    <!-- ---- Project detail template ---- -->
+    <section class="project-view" id="projectView">
+
+      <header class="project-head">
+        <div class="project-meta-row">
+          <span class="project-index" id="pIndex">01</span>
+          <span class="dot">·</span>
+          <span class="project-year" id="pYear">2025</span>
+          <span class="dot">·</span>
+          <span class="project-role" id="pRole">Product Design</span>
+        </div>
+        <h1 class="project-title" id="pTitle">Project title</h1>
+        <div class="project-tags" id="pTags"></div>
+      </header>
+
+      <div class="project-about">
+        <p id="pAbout">About text</p>
+      </div>
+
+      <div class="project-shot-wrap">
+        <a class="project-shot" id="pShotLink" href="#" target="_blank" rel="noopener" aria-label="Open project on Behance">
+          <div class="shot-canvas" id="pShotCanvas"><!-- svg mockup injected --></div>
+          <span class="shot-corner tl"></span>
+          <span class="shot-corner tr"></span>
+          <span class="shot-corner bl"></span>
+          <span class="shot-corner br"></span>
+          <span class="shot-overlay">
+            <span class="shot-overlay-btn">View on Behance <span class="arrow">↗</span></span>
+          </span>
+        </a>
+      </div>
+
+      <nav class="project-pager">
+        <button class="pager-btn" id="prevBtn" type="button">
+          <span class="pager-arrow">←</span> Previous
+        </button>
+        <button class="pager-btn" id="nextBtn" type="button">
+          Next <span class="pager-arrow">→</span>
+        </button>
+      </nav>
+    </section>
+
+    <!-- ---- Contact view ---- -->
+    <section class="contact-view" id="contactView" hidden>
+      <header class="project-head">
+        <div class="project-meta-row">
+          <span class="project-index">N+1</span>
+          <span class="dot">·</span>
+          <span class="project-role">Say hello</span>
+        </div>
+        <h1 class="project-title">Let's work together</h1>
+      </header>
+
+      <p class="contact-intro">
+        Have a project in mind, or just want to talk design? Fill in the form below —
+        it opens a message in your email app addressed to me, ready to send.
+      </p>
+
+      <form class="contact-form" id="contactForm">
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input class="field-input" type="text" name="name" id="cName" placeholder="Your full name" required>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input class="field-input" type="email" name="email" id="cEmail" placeholder="you@example.com" required>
+        </label>
+
+        <label class="field">
+          <span class="field-label">Message</span>
+          <textarea class="field-input field-textarea" name="message" id="cMessage" rows="6" placeholder="Tell me a bit about your project…" required></textarea>
+        </label>
+
+        <button class="send-btn" type="submit">
+          <span>Send message</span>
+          <span class="arrow">↗</span>
+        </button>
+
+        <p class="form-note" id="formNote"></p>
+      </form>
+    </section>
+
+    <!-- ---- Resume view ---- -->
+    <section class="resume-view" id="resumeView" hidden>
+      <header class="project-head">
+        <div class="project-meta-row">
+          <span class="project-index">CV</span>
+          <span class="dot">·</span>
+          <span class="project-role">Resume</span>
+        </div>
+        <h1 class="project-title">Prashant Kumar</h1>
+        <p class="resume-tagline" id="resumeTagline">Product &amp; UI/UX Designer — 6 years designing for web and mobile</p>
+      </header>
+
+      <div class="resume-actions">
+        <a class="send-btn" id="resumeDownloadBtn" href="resume.pdf" download>
+          <span>Download PDF</span>
+          <span class="arrow">↓</span>
+        </a>
+        <div class="resume-contacts" id="resumeContacts"></div>
+      </div>
+
+      <div class="resume-block">
+      <h2 class="resume-heading">Professional Summary</h2>
+      <p>UI/UX Designer focused on creating intuitive, user-centered digital experiences. Skilled in translating ideas and user needs into wireframes, prototypes, and polished interfaces. Experienced in developing UI/UX projects across web and mobile concepts, with a strong interest in product design, interaction design, and visual design.</p>
+      </div>
+
+      <div class="resume-block">
+        <h2 class="resume-heading">Projects</h2>
+        <div class="resume-projects">
+          <div class="resume-project-item">
+            <div class="resume-project-num">01</div>
+            <div>
+              <h3 class="resume-project-title">Travel Booking App — UI/UX Concept</h3>
+              <p class="resume-project-desc">A modern travel booking app concept designed to make discovering destinations, comparing options, and booking trips simple and enjoyable — with a clean, intuitive interface and strong visual hierarchy.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">02</div>
+            <div>
+              <h3 class="resume-project-title">Verdant — Plant Care Marketplace</h3>
+              <p class="resume-project-desc">Connects home gardeners with local plant sellers. Ran a round of usability testing on the original checkout flow, found a 38% drop-off at shipping selection, and redesigned it around a single-page checkout with inline validation — shipped in six weeks.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">03</div>
+            <div>
+              <h3 class="resume-project-title">Nike Webstore — Reimagined</h3>
+              <p class="resume-project-desc">A next-generation take on the Nike webstore, blending high-performance design with immersive interaction.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">04</div>
+            <div>
+              <h3 class="resume-project-title">Cadence — Health Dashboard</h3>
+              <p class="resume-project-desc">A clinician-facing dashboard for remote patient monitoring. The challenge was surfacing urgent vitals without alarm fatigue — designed a tiered alert system and a glanceable card layout clinicians could scan in under ten seconds per patient.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">05</div>
+            <div>
+              <h3 class="resume-project-title">ENERGO — Energy Drink Packaging & Branding</h3>
+              <p class="resume-project-desc">Packaging designed to feel more like a high-performance digital interface than a traditional beverage can. Inspired by cyberpunk visuals and gaming dashboards, using glowing circular graphics, bold typography, and data-inspired UI elements to communicate speed and power.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">06</div>
+            <div>
+              <h3 class="resume-project-title">Northline — Banking App Redesign</h3>
+              <p class="resume-project-desc">A desktop banking dashboard extending the Northline mobile experience into a financial command center — clear navigation, account insights, and spending analytics with a consistent visual identity across platforms.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">07</div>
+            <div>
+              <h3 class="resume-project-title">Spotify — UI Concept Showcase</h3>
+              <p class="resume-project-desc">An exploratory UI concept design showcase built around Spotify's product and visual language.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">08</div>
+            <div>
+              <h3 class="resume-project-title">EazyDiner — App Redesign, UI/UX Case Study</h3>
+              <p class="resume-project-desc">A redesign of the EazyDiner mobile app focused on a seamless, premium dining experience: a refined home screen with personalized recommendations, a simplified restaurant discovery flow, and a streamlined table-booking process. Careful attention to typography, spacing, and color hierarchy keeps the interface minimal, intuitive, and consistent throughout.</p>
+            </div>
+          </div>
+          <div class="resume-project-item">
+            <div class="resume-project-num">09</div>
+            <div>
+              <h3 class="resume-project-title">Modelle — Fashion Brand Identity</h3>
+              <p class="resume-project-desc">A modern, elegant fashion brand identity built around a clean, timeless visual language. Refined serif typography paired with a distinctive monogram, set against neutral luxury tones — beige, champagne, and black — for a soft, sophisticated feel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-block">
+        <h2 class="resume-heading">Education</h2>
+        <div class="resume-timeline" id="resumeEducation"></div>
+      </div>
+
+      <div class="resume-block">
+        <h2 class="resume-heading">Skills &amp; Tools</h2>
+        <div class="project-tags" id="resumeSkills"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Open project list">☰</button>
+
+<script>
+/* =========================================================
+   YOUR EMAIL — mail sent from the contact form goes here
+   ========================================================= */
+const CONTACT_EMAIL = "prashant.13080.kumar@gmail.com"; // <-- replace with your real email
+
+/* =========================================================
+   PROJECT DATA
+   Replace with your own projects. To use a real screenshot
+   instead of the generated mockup, add an `image: "images/yourfile.jpg"`
+   field — the script will use an <img> instead of the SVG mockup.
+   ========================================================= */
+const projects = [
+  {
+    title: "Travel Booking App UI/UX concept",
+    role: "Product Design · Web",
+    year: "2025",
+    tags: ["Figma", "Desktop", "Design System","Adobe Illustrator","Adobe Photoshop"],
+    about: "A modern Travel Booking App UI/UX concept designed to make discovering destinations, comparing travel options, and booking trips simple and enjoyable. The project focuses on creating a seamless end-to-end travel experience with a clean, intuitive interface and strong visual hierarchy.",
+    link: "https://www.behance.net/",
+    accent: "#3B4FE4",
+    image: "assets/travelbooking.png"
+  },
+  
+  {
+    title: "Cadence Health Dashboard",
+    role: "Product Design · Web",
+    year: "2026",
+    tags: ["Healthcare", "Dashboard", "Data Viz", "Design System","Adobe Illustrator","Adobe Photoshop", "Figma"],
+    about: "A clinician-facing dashboard for remote patient monitoring. The challenge was surfacing urgent vitals without alarm fatigue — I designed a tiered alert system and a glanceable card layout that clinicians could scan in under ten seconds per patient.",
+    link: "https://www.behance.net/gallery/253973805/Cadence-Health-Dashboard",
+    accent: "#2FA36B",
+    image: "assets/health.png"
+  },
+  {
+    title: "ENERGO – Energy Drink Packaging Design & Beverage Branding",
+    role: "Brand Identity · Web Design · Branding · Packaging Design · Beverage",
+    year: "2025",
+    tags: ["Branding", "Packaging Design", "Design System","Adobe Illustrator","Adobe Photoshop", "Figma"],
+    about: "The idea behind ENERGO was to create packaging that feels more like a high-performance digital interface than a traditional beverage can. Inspired by cyberpunk visuals, gaming dashboards, and modern technology, the design features glowing circular graphics, bold typography, dynamic lighting, and data-inspired UI elements that communicate speed, power, and energy.",
+    link: "https://www.behance.net/",
+    accent: "#B23BE4",
+    image: "assets/energo.png"
+  },
+  {
+    title: "Northline Banking App Redesign",
+    role: "Product Design · Web · Banking",
+    year: "2026",
+    tags: ["Productivity", "Web", "Design System","Adobe Illustrator","Adobe Photoshop", "Figma"],
+    about: "A modern desktop banking dashboard designed to extend the Northline mobile experience into a powerful financial command center. The interface combines clear navigation, account insights, spending analytics, and financial trends while maintaining a consistent visual identity across platforms.",
+    link: "https://www.behance.net/gallery/253973647/Northline-Banking-App-Redesign",
+    accent: "#E4B26B",
+    image: "assets/northline.png"
+  },
+  {
+    title: "Spotify UI concept design showcase",
+    role: "Product Design · Mobile",
+    year: "December 30th 2025",
+    tags: ["Productivity", "iOS", "Design System","Adobe Illustrator","Adobe Photoshop"],
+    about: "Spotify UI concept design showcase.",
+    link: "https://www.behance.net/gallery/241258149/Spotify-UI-concept-design-showcase",
+    accent: "#A4B23B",
+    image: "assets/spotify.png"
+  },
+  {
+    title: "Reimagining the Nike webstore",
+    role: "Product Design · Webstore",
+    year: "March 28th 2026",
+    tags: ["Productivity", "Webstore", "Design System","Adobe Illustrator","Adobe Photoshop"],
+    about: "Reimagining the Nike webstore as a next-generation digital experience that blends high-performance design with immersive interaction.",
+    link: "https://www.behance.net/gallery/246580185/Reimagining-the-Nike-webstore",
+    accent: "#fb2b91",
+    image: "assets/nike.png"
+  },
+
+  {
+    title: "Verdant — Plant Care Marketplace",
+    role: "UX Research & UI Design",
+    year: "2026",
+    tags: ["E-commerce", "Web App", "Design System","Adobe Illustrator","Adobe Photoshop", "Figma"],
+    about: "Verdant connects home gardeners with local plant sellers. I ran a round of usability testing on the original checkout flow, found a 38% drop-off at shipping selection, and redesigned it around a single-page checkout with inline validation. The new flow shipped in six weeks.",
+    link: "https://www.figma.com/design/Fugnk9fRQgza7PlGIE6wub/Untitled?node-id=0-1&t=zZVFH79zGv4gL6Du-1",
+    accent: "#E4633B",
+    image: "assets/verdant.png"
+  },
+  {
+    title: "Modelle – Modern Fashion Brand Identity",
+    role: "Product Design · Brand",
+    year: "2023",
+    tags: ["Productivity", "Fashion", "Product", "Design System","Adobe Illustrator","Adobe Photoshop"],
+    about: "Modelle is designed as a modern and elegant fashion brand identity that reflects sophistication, minimalism, and premium aesthetics. The concept focuses on creating a clean and timeless visual language suitable for contemporary fashion and e-commerce brands. The logo combines refined typography with a distinctive monogram symbol to represent luxury, elegance, and brand recognition. The lettermark uses a stylish serif typeface to give the brand a high-end fashion feel, while the monogram icon adds versatility for use across packaging, social media, and digital platforms. The color palette is inspired by neutral luxury tones such as beige, champagne, and black, which are commonly associated with premium fashion brands. These tones create a soft yet sophisticated look that enhances the brand’s elegance.",
+    link: "https://www.behance.net/gallery/245828425/Modelle-Modern-Fashion-Brand-Identity",
+    accent: "#fb2b2b",
+    image: "assets/modelle.png"
+  },
+  {
+    title: "EazyDiner App Redesign 🍽️ | Modern UI/UX Case Study",
+    role: "Product Design · Mobile · App · Dining",
+    year: "2026",
+    tags: ["Productivity", "App", "UI/UX", "Design System","Adobe Illustrator","Adobe Photoshop", "Figma"],
+    about: "This project is a modern UI/UX redesign of the EazyDiner mobile application, focused on creating a seamless and premium dining experience for users. The goal was to enhance usability, simplify the reservation flow, and deliver a visually appealing interface that aligns with today’s design standards. The design approach emphasizes minimalism, intuitive navigation, and smooth user interaction. Key improvements include a refined home screen with personalized recommendations, an optimized restaurant discovery experience, and a streamlined table booking process. Special attention was given to typography, spacing, and color hierarchy to ensure clarity and consistency across the app. The interface is designed to make exploring restaurants, checking offers, and booking tables feel effortless and engaging. Micro-interactions and clean layouts contribute to a polished, user-friendly experience that enhances both functionality and aesthetics. This redesign reflects a balance between usability.",
+    link: "https://www.behance.net/gallery/246623959/EazyDiner-App-Redesign-Modern-UIUX-Case-Study",
+    accent: "#bcdfff",
+    image: "assets/easy.png"
+  }
+];
+
+let activeIndex = 0;
+
+/* =========================================================
+   RESUME DATA
+   Replace with your own info. `pdf` should point to an actual
+   PDF file (e.g. "resume.pdf") sitting next to this HTML file
+   — that's what the Download button links to.
+   ========================================================= */
+const resume = {
+  tagline: "UI/UX Designer | Product Designer",
+  pdf: "resume.pdf",
+  contacts: [
+    { label: "prashant.13080.kumar@gmail.com", href: "prashant.13080.kumar@gmail.com" },
+    { label: "linkedin.com/in/prashant-kumar", href: "https://www.linkedin.com/in/prashant-kumar-31129a40a/" },
+    { label: "Based in — Ghaziabad, UP", href: "#" }
+  ],
+  education: [
+    {
+      role: "Secondary",
+      org: "Kendriya Vidhyalaya No. 1 Faridabad",
+      dates: "",
+      desc: ""
+    },
+
+    {
+      role: "Senior Secondary",
+      org: "SKD Hathras",
+      dates: "2020",
+      desc: ""
+    },
+
+    {
+      role: "B.E. - CSE",
+      org: "Chandigarh University",
+      dates: "2020 — 2024",
+      desc: "Developed a strong foundation in user-centered design, interface design, typography, and interaction principles."
+    }
+    
+  ],
+  skills: [
+    "Figma", "Prototyping","Adobe Photoshop","Adobe Illustrator","Design Systems", "User Research",
+    "Usability Testing", "Interaction Design", "HTML/CSS", 
+  ]
+};
+
+/* =========================================================
+   SVG MOCKUP GENERATOR
+   Produces a simple abstract "screen" illustration colored
+   to the project's accent — a placeholder until you swap in
+   a real screenshot or Behance capture.
+   ========================================================= */
+function buildMockupSVG(project, seed) {
+  const c = project.accent;
+  const rand = mulberry32(seed);
+  const bars = Array.from({ length: 4 }, () => 40 + rand() * 220);
+
+  return `
+  <svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${project.title} preview">
+    <defs>
+      <linearGradient id="g${seed}" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="${c}" stop-opacity="0.16"/>
+        <stop offset="100%" stop-color="${c}" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    <rect width="640" height="400" fill="url(#g${seed})"/>
+    <rect x="0" y="0" width="640" height="400" fill="none" stroke="${c}" stroke-opacity="0.15"/>
+
+    <!-- browser chrome -->
+    <rect x="32" y="32" width="576" height="336" rx="8" fill="var(--surface)" stroke="${c}" stroke-opacity="0.35"/>
+    <rect x="32" y="32" width="576" height="34" rx="8" fill="${c}" fill-opacity="0.12"/>
+    <circle cx="52" cy="49" r="4" fill="${c}" fill-opacity="0.5"/>
+    <circle cx="66" cy="49" r="4" fill="${c}" fill-opacity="0.35"/>
+    <circle cx="80" cy="49" r="4" fill="${c}" fill-opacity="0.25"/>
+
+    <!-- sidebar -->
+    <rect x="48" y="86" width="96" height="266" rx="4" fill="${c}" fill-opacity="0.08"/>
+    ${[0,1,2,3,4].map(i => `<rect x="60" y="${106 + i*40}" width="${i===0?72:56}" height="8" rx="4" fill="${c}" fill-opacity="${i===0?0.7:0.25}"/>`).join("")}
+
+    <!-- content blocks -->
+    <rect x="160" y="86" width="200" height="120" rx="6" fill="${c}" fill-opacity="0.14"/>
+    <rect x="372" y="86" width="220" height="120" rx="6" fill="${c}" fill-opacity="0.08"/>
+
+    <rect x="160" y="222" width="432" height="14" rx="4" fill="${c}" fill-opacity="0.3"/>
+    <rect x="160" y="246" width="340" height="10" rx="4" fill="${c}" fill-opacity="0.15"/>
+
+    <!-- bar chart flourish -->
+    ${bars.map((h, i) => `<rect x="${160 + i*54}" y="${352 - h*0.45}" width="34" height="${h*0.45}" rx="3" fill="${c}" fill-opacity="${0.2 + i*0.12}"/>`).join("")}
+  </svg>`;
+}
+
+// small deterministic PRNG so each project's mockup is stable
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/* =========================================================
+   RENDER: SIDEBAR LIST
+   ========================================================= */
+const listEl = document.getElementById("projectList");
+const countEl = document.getElementById("projectCount");
+
+function renderList() {
+  countEl.textContent = String(projects.length).padStart(2, "0");
+  listEl.innerHTML = projects.map((p, i) => `
+    <button class="project-item${i === activeIndex ? " active" : ""}" data-index="${i}">
+      <span class="p-num">${String(i + 1).padStart(2, "0")}</span>
+      <span class="p-info">
+        <span class="p-name">${escapeHTML(p.title)}</span>
+        <span class="p-sub">${escapeHTML(p.role)} — ${p.year}</span>
+      </span>
+      <span class="p-swatch" style="background:${p.accent}"></span>
+    </button>
+  `).join("");
+
+  listEl.querySelectorAll(".project-item").forEach(btn => {
+    btn.addEventListener("click", () => selectProject(Number(btn.dataset.index)));
+  });
+}
+
+/* =========================================================
+   RENDER: PROJECT DETAIL
+   ========================================================= */
+const pIndex = document.getElementById("pIndex");
+const pYear = document.getElementById("pYear");
+const pRole = document.getElementById("pRole");
+const pTitle = document.getElementById("pTitle");
+const pTags = document.getElementById("pTags");
+const pAbout = document.getElementById("pAbout");
+const pShotLink = document.getElementById("pShotLink");
+const pShotCanvas = document.getElementById("pShotCanvas");
+const projectView = document.getElementById("projectView");
+const contactView = document.getElementById("contactView");
+const resumeView = document.getElementById("resumeView");
+
+function renderProject(i) {
+  const p = projects[i];
+  pIndex.textContent = String(i + 1).padStart(2, "0") + " / " + String(projects.length).padStart(2, "0");
+  pYear.textContent = p.year;
+  pRole.textContent = p.role;
+  pTitle.textContent = p.title;
+  pTags.innerHTML = p.tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join("");
+  pAbout.textContent = p.about;
+  pShotLink.href = p.link;
+
+  pShotCanvas.innerHTML = p.image
+    ? `<img src="${p.image}" alt="${escapeHTML(p.title)} screenshot" style="width:100%;height:100%;object-fit:cover;">`
+    : buildMockupSVG(p, i + 1);
+}
+
+function selectProject(i) {
+  activeIndex = i;
+  renderList();
+  renderProject(i);
+  showProjectView();
+  document.querySelector(".stage").scrollTo?.({ top: 0, behavior: "instant" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  closeMobileSidebar();
+}
+
+function showView(view) {
+  projectView.hidden = view !== "project";
+  contactView.hidden = view !== "contact";
+  resumeView.hidden = view !== "resume";
+}
+
+function showProjectView() {
+  showView("project");
+}
+
+function showContactView() {
+  showView("contact");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  closeMobileSidebar();
+}
+
+function showResumeView() {
+  showView("resume");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  closeMobileSidebar();
+}
+
+/* Pager */
+document.getElementById("prevBtn").addEventListener("click", () => {
+  selectProject((activeIndex - 1 + projects.length) % projects.length);
+});
+document.getElementById("nextBtn").addEventListener("click", () => {
+  selectProject((activeIndex + 1) % projects.length);
+});
+
+document.getElementById("contactNavBtn").addEventListener("click", showContactView);
+document.getElementById("resumeNavBtn").addEventListener("click", showResumeView);
+
+/* =========================================================
+   RENDER: RESUME
+   ========================================================= */
+function renderResume() {
+  document.getElementById("resumeTagline").textContent = resume.tagline;
+  document.getElementById("resumeDownloadBtn").href = resume.pdf;
+
+  document.getElementById("resumeContacts").innerHTML = resume.contacts.map(c =>
+    `<a href="${c.href}" target="_blank" rel="noopener">${escapeHTML(c.label)}</a>`
+  ).join("");
+
+  const entryHTML = (e) => `
+    <div class="resume-entry">
+      <div class="resume-entry-dates">${escapeHTML(e.dates)}</div>
+      <div>
+        <h3 class="resume-entry-role">${escapeHTML(e.role)}</h3>
+        <p class="resume-entry-org">${escapeHTML(e.org)}</p>
+        <p class="resume-entry-desc">${escapeHTML(e.desc)}</p>
+      </div>
+    </div>`;
+
+  document.getElementById("resumeEducation").innerHTML = resume.education.map(entryHTML).join("");
+  document.getElementById("resumeSkills").innerHTML = resume.skills.map(s => `<span class="tag">${escapeHTML(s)}</span>`).join("");
+}
+
+/* =========================================================
+   THEME TOGGLE
+   ========================================================= */
+const themeToggle = document.getElementById("themeToggle");
+const themeLabel = document.getElementById("themeLabel");
+const root = document.documentElement;
+
+function applyTheme(theme) {
+  root.setAttribute("data-theme", theme);
+  themeLabel.textContent = theme === "dark" ? "Light" : "Dark";
+  localStorage.setItem("portfolio-theme", theme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("portfolio-theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(saved || (prefersDark ? "dark" : "light"));
+}
+
+themeToggle.addEventListener("click", () => {
+  const current = root.getAttribute("data-theme");
+  applyTheme(current === "dark" ? "light" : "dark");
+});
+
+/* =========================================================
+   CONTACT FORM — opens a pre-filled email in the user's
+   mail client (works with zero backend / no API keys).
+   To send messages straight to your inbox without opening
+   a mail app, wire this form up to a form service such as
+   Formspree or Getform and POST to their endpoint instead.
+   ========================================================= */
+const contactForm = document.getElementById("contactForm");
+const formNote = document.getElementById("formNote");
+
+contactForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("cName").value.trim();
+  const email = document.getElementById("cEmail").value.trim();
+  const message = document.getElementById("cMessage").value.trim();
+
+  if (!name || !email || !message) {
+    formNote.textContent = "Please fill in every field.";
+    return;
+  }
+
+  const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
+  const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+
+  formNote.textContent = "Opening your email app… if nothing happens, email me directly at " + CONTACT_EMAIL;
+});
+
+/* =========================================================
+   MOBILE SIDEBAR
+   ========================================================= */
+const sidebar = document.getElementById("sidebar");
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+mobileMenuBtn.addEventListener("click", () => sidebar.classList.toggle("open"));
+function closeMobileSidebar() { sidebar.classList.remove("open"); }
+
+/* =========================================================
+   UTIL
+   ========================================================= */
+function escapeHTML(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+document.getElementById("year").textContent = new Date().getFullYear();
+initTheme();
+renderList();
+renderProject(activeIndex);
+renderResume();
+
+</script>
+</body>
+</html>
